@@ -74,7 +74,7 @@ public class Backtracking {
             {5, 0, 0, 0, 0, 9, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 4, 0}
         };
-        
+
         long startTime = System.nanoTime(); // Start
         sudoku(board);
         long endTime = System.nanoTime(); // End
