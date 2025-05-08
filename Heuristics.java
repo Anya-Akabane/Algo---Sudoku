@@ -58,7 +58,7 @@ public class Heuristics {
         return false;
     }
 
-    // Find the most constrained cell (MCV)
+    // Find the Minimum Remaining Values (MRV)
     static int[] findMostConstrainedCell(int[][] board) {
         int minOptions = SIZE + 1;
         int[] bestCell = null;

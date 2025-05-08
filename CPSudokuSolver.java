@@ -57,34 +57,28 @@ public class CPSudokuSolver {
         }
     }
 
-    public static void main(String[] args) {
-        String board =
-                "530070000" +
-                "600195000" +
-                "098000060" +
-                "800060003" +
-                "400803001" +
-                "700020006" +
-                "060000280" +
-                "000419005" +
-                "000080079";
-
-        long startTime = System.nanoTime();
+    public int[][] solve(int[][] puzzle) {
+        // Convert the 2D integer array to a 1D string array
         String[] values = new String[81];
         for (int i = 0; i < 81; i++) {
-            char c = board.charAt(i);
-            values[i] = (c >= '1' && c <= '9') ? String.valueOf(c) : "123456789";
+            int row = i / 9;
+            int col = i % 9;
+            values[i] = (puzzle[row][col] != 0) ? String.valueOf(puzzle[row][col]) : "123456789";
         }
 
+        // Solve the puzzle using constraint propagation and search
         if (search(values)) {
-            print(values);
+            // Convert the solved 1D string array back to a 2D integer array
+            int[][] solvedPuzzle = new int[9][9];
+            for (int i = 0; i < 81; i++) {
+                int row = i / 9;
+                int col = i % 9;
+                solvedPuzzle[row][col] = Integer.parseInt(values[i]);
+            }
+            return solvedPuzzle;
         } else {
-            System.out.println("No solution.");
+            throw new IllegalArgumentException("No solution exists for the given Sudoku puzzle.");
         }
-
-        long endTime = System.nanoTime();
-        System.out.println("Steps: " + steps);
-        System.out.println("Time: " + (endTime - startTime) / 1_000_000.0 + " ms");
     }
 
     static boolean search(String[] values) {
