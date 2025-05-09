@@ -1,4 +1,6 @@
-public class CPSudokuSolver {
+package algorithms;
+
+public class ConstraintPropagation {
     static final String rows = "ABCDEFGHI";
     static final String cols = "123456789";
     static String[] boxes = new String[81];
@@ -6,7 +8,7 @@ public class CPSudokuSolver {
     static String[][] peers = new String[81][];
     static int steps = 0;
 
-    static {
+    public ConstraintPropagation() {
         int index = 0;
         for (char r : rows.toCharArray()) {
             for (char c : cols.toCharArray()) {
@@ -81,7 +83,11 @@ public class CPSudokuSolver {
         }
     }
 
-    static boolean search(String[] values) {
+    public int getSteps() {
+        return steps;
+    }
+
+    private boolean search(String[] values) {
         steps++;
         if (!reduce(values)) return false;
         int min = 10, minIndex = -1;
@@ -105,7 +111,7 @@ public class CPSudokuSolver {
         return false;
     }
 
-    static boolean reduce(String[] values) {
+    private boolean reduce(String[] values) {
         boolean stalled;
         do {
             stalled = true;
@@ -122,13 +128,13 @@ public class CPSudokuSolver {
         return true;
     }
 
-    static int countSolved(String[] values) {
+    private int countSolved(String[] values) {
         int count = 0;
         for (String v : values) if (v.length() == 1) count++;
         return count;
     }
 
-    static boolean eliminate(String[] values) {
+    private boolean eliminate(String[] values) {
         for (int i = 0; i < 81; i++) {
             if (values[i].length() == 1) {
                 String d = values[i];
@@ -145,7 +151,7 @@ public class CPSudokuSolver {
         return true;
     }
 
-    static boolean onlyChoice(String[] values) {
+    private boolean onlyChoice(String[] values) {
         for (int u = 0; u < unitlist.length; u++) {
             for (char d = '1'; d <= '9'; d++) {
                 String foundBox = null;
@@ -169,7 +175,7 @@ public class CPSudokuSolver {
         return true;
     }
 
-    static boolean nakedTwins(String[] values) {
+    private boolean nakedTwins(String[] values) {
         for (int u = 0; u < unitlist.length; u++) {
             for (int i = 0; i < 9; i++) {
                 int i1 = indexOf(unitlist[u][i]);
@@ -196,14 +202,14 @@ public class CPSudokuSolver {
         return true;
     }
 
-    static void print(String[] values) {
+    private void print(String[] values) {
         for (int i = 0; i < 81; i++) {
             System.out.print(values[i] + " ");
             if ((i + 1) % 9 == 0) System.out.println();
         }
     }
 
-    static int indexOf(String box) {
+    private int indexOf(String box) {
         for (int i = 0; i < 81; i++) {
             if (boxes[i].equals(box)) return i;
         }

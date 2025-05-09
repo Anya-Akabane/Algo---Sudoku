@@ -2,6 +2,9 @@ import java.util.Collections;
 import java.util.ArrayList;
 import java.util.Random;
 
+import solver.SudokuSolver;
+import solvers.BacktrackingSolver;
+
 public class SudokuGenerator {
     private static final int SIZE = 9;
     private Random random = new Random();

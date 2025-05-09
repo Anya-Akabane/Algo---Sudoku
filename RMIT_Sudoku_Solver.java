@@ -1,8 +1,16 @@
+import solver.SudokuSolver;
+import solvers.BacktrackingSolver;
+import solvers.ConstraintPropagationSolver;
+import solvers.DLXSolver;
+import solvers.HeuristicsSolver;
+
 public class RMIT_Sudoku_Solver {
+    private SudokuSolver solver; // Store the actual solver instance
+
     public int[][] solve(int[][] puzzle) { 
         // Use the factory to get the default solver (e.g., "backtracking")
-        // backtracking | dlx | heuristics | genetic | constraint
-        SudokuSolver solver = SudokuSolverFactory.getSolver("backtracking");
+        // backtracking | dlx | heuristics | constraint
+        solver = SudokuSolverFactory.getSolver("heuristics");
 
         // Solve the puzzle using the selected algorithm
         return solver.solve(puzzle);
@@ -20,13 +28,16 @@ public class RMIT_Sudoku_Solver {
         System.out.println("Generated Puzzle:");
         printGrid(puzzle);
 
-        RMIT_Sudoku_Solver solver = new RMIT_Sudoku_Solver();
+        System.out.println("\nGenerated Puzzle (2D Array Format):");
+        printGridAsArray(puzzle);
+
+        RMIT_Sudoku_Solver solverInstance = new RMIT_Sudoku_Solver();
 
         // Start the timer
         long startTime = System.nanoTime();
 
         // Solve the puzzle using the default algorithm
-        int[][] solution = solver.solve(puzzle);
+        int[][] solution = solverInstance.solve(puzzle);
 
         // End the timer
         long endTime = System.nanoTime();
@@ -37,6 +48,21 @@ public class RMIT_Sudoku_Solver {
         // Print the solved puzzle
         System.out.println("\nSolved Sudoku:");
         printGrid(solution);
+
+        // Retrieve and print the number of steps
+        if (solverInstance.solver instanceof BacktrackingSolver) {
+            int steps = ((BacktrackingSolver) solverInstance.solver).getSteps();
+            System.out.println("Steps taken: " + steps);
+        } else if (solverInstance.solver instanceof HeuristicsSolver) {
+            int steps = ((HeuristicsSolver) solverInstance.solver).getSteps();
+            System.out.println("Steps taken: " + steps);
+        } else if (solverInstance.solver instanceof ConstraintPropagationSolver) {
+            int steps = ((ConstraintPropagationSolver) solverInstance.solver).getSteps();
+            System.out.println("Steps taken: " + steps);
+        } else {
+            int steps = ((DLXSolver) solverInstance.solver).getSteps();
+            System.out.println("Steps taken: " + steps);
+        }
 
         // Print the time taken
         System.out.printf("Time taken to solve: %.3f ms%n", elapsedTime);
@@ -50,5 +76,26 @@ public class RMIT_Sudoku_Solver {
             }
             System.out.println();
         }
-    }    
+    }
+
+    // Helper method to print a Sudoku grid in 2D array format
+    private static void printGridAsArray(int[][] grid) {
+        System.out.println("{");
+        for (int i = 0; i < grid.length; i++) {
+            System.out.print("    {");
+            for (int j = 0; j < grid[i].length; j++) {
+                System.out.print(grid[i][j]);
+                if (j < grid[i].length - 1) {
+                    System.out.print(", ");
+                }
+            }
+            System.out.print("}");
+            if (i < grid.length - 1) {
+                System.out.println(",");
+            } else {
+                System.out.println();
+            }
+        }
+        System.out.println("};");
+    }
 }
