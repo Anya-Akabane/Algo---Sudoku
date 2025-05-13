@@ -27,7 +27,8 @@ public class Heuristics {
             System.out.println("No solution found.");
         }
     }
- 
+
+    // Print the Sudoku board
     // In bảng Sudoku
     public void print(int[][] board) {
         for (int i = 0; i < SIZE; i++) {
@@ -83,7 +84,8 @@ public class Heuristics {
         }
         return best;
     }
- 
+
+    // LCV: return the an array of valid values sorted by increasing conflicts
     // LCV: trả về mảng giá trị hợp lệ sắp xếp theo độ gây xung đột tăng dần
     public int[] getLCV(int[][] board, int row, int col) {
         int[] scores = new int[10];
@@ -96,8 +98,9 @@ public class Heuristics {
                 result[idx++] = val;
             }
         }
- 
+
         // Sắp xếp theo số lượng xung đột tăng dần
+        // Sort by the number of conflicts in ascending order (Line 88)
         for (int i = 0; i < idx - 1; i++) {
             for (int j = i + 1; j < idx; j++) {
                 if (scores[result[i]] > scores[result[j]]) {
@@ -110,8 +113,9 @@ public class Heuristics {
  
         return result;
     }
- 
+
     // Forward checking: kiểm tra xem sau khi gán, các ô còn lại vẫn còn lựa chọn không
+    // Forward checking: Check if after assigning, the remaining cells still have options (Line 101)
     public boolean forwardCheck(int[][] board, int row, int col) {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
@@ -121,8 +125,9 @@ public class Heuristics {
         }
         return true;
     }
- 
+
     // Đếm số giá trị hợp lệ cho ô (row, col)
+    // Count the number of valid values for the cell (row, col) (Line 110)
     public int countOptions(int[][] board, int row, int col) {
         int count = 0;
         for (int num = 1; num <= 9; num++) {
@@ -130,8 +135,9 @@ public class Heuristics {
         }
         return count;
     }
- 
+
     // Tính số lượng ô bị ảnh hưởng nếu gán giá trị này (để dùng trong LCV)
+    // Calculate the number of cells affected if this value is assigned (used in LCV) (Line 117)
     public int countConstraints(int[][] board, int row, int col, int num) {
         int count = 0;
         for (int i = 0; i < SIZE; i++) {
@@ -149,8 +155,9 @@ public class Heuristics {
  
         return count;
     }
- 
+
     // Kiểm tra gán số có hợp lệ không
+    // Check if assigning a number is valid (Line 134)
     public boolean isValid(int[][] board, int row, int col, int num) {
         for (int i = 0; i < SIZE; i++) {
             if (board[row][i] == num || board[i][col] == num) return false;
