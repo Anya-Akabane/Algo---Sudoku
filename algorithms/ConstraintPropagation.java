@@ -6,7 +6,10 @@ public class ConstraintPropagation {
     static String[] boxes = new String[81];
     static String[][] unitlist = new String[27][9];
     static String[][] peers = new String[81][];
-    static int steps = 0;
+    private int steps = 0;
+    private MemoryTracker.State memoryState = new MemoryTracker.State(0, 0);
+    private long[] memoryUsages = new long[1000];
+    private double avgMemoryUsage;
 
     public ConstraintPropagation() {
         int index = 0;
@@ -60,6 +63,7 @@ public class ConstraintPropagation {
     }
 
     public int[][] solve(int[][] puzzle) {
+        // steps = 0; // Reset steps for each new puzzle
         // Convert the 2D integer array to a 1D string array
         String[] values = new String[81];
         for (int i = 0; i < 81; i++) {
@@ -77,6 +81,14 @@ public class ConstraintPropagation {
                 int col = i % 9;
                 solvedPuzzle[row][col] = Integer.parseInt(values[i]);
             }
+
+            int memoryUsageCount = memoryState.memoryUsageCount;
+            long total = 0;
+            for (int i = 0; i < memoryUsageCount; i++) {
+                total += memoryUsages[i];
+            }
+            avgMemoryUsage = memoryUsageCount > 0 ? total / (double) memoryUsageCount / 1024 : 0; // in KB
+
             return solvedPuzzle;
         } else {
             throw new IllegalArgumentException("No solution exists for the given Sudoku puzzle.");
@@ -87,8 +99,19 @@ public class ConstraintPropagation {
         return steps;
     }
 
-    private boolean search(String[] values) {
+    public double getAvgMemoryUsage() {
+        return avgMemoryUsage;
+    }
+
+    
+    private void step() {
         steps++;
+        MemoryTracker.trackMemoryUsage(steps, memoryState, memoryUsages);
+    }
+
+    private boolean search(String[] values) {
+        step();
+
         if (!reduce(values)) return false;
         int min = 10, minIndex = -1;
         for (int i = 0; i < 81; i++) {
@@ -142,7 +165,7 @@ public class ConstraintPropagation {
                     int pi = indexOf(peer);
                     if (values[pi].contains(d)) {
                         values[pi] = values[pi].replace(d, "");
-                        steps++;
+                        step();
                         if (values[pi].length() == 0) return false;
                     }
                 }
@@ -167,7 +190,7 @@ public class ConstraintPropagation {
                     int idx = indexOf(foundBox);
                     if (values[idx].length() > 1) {
                         values[idx] = String.valueOf(d);
-                        steps++;
+                        step();
                     }
                 }
             }
@@ -189,7 +212,7 @@ public class ConstraintPropagation {
                                 for (char c : values[i1].toCharArray()) {
                                     if (values[ik].contains(String.valueOf(c))) {
                                         values[ik] = values[ik].replace(String.valueOf(c), "");
-                                        steps++;
+                                        step();
                                         if (values[ik].length() == 0) return false;
                                     }
                                 }

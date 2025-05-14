@@ -3,6 +3,11 @@ import java.util.Arrays;
 
 public class Backtracking {
     private int steps = 0; // Counter for steps
+    private int lastMemoryPrintStep = 0;
+    private long[] memoryUsages = new long[1000]; // Adjust size as needed
+    private int memoryUsageCount = 0;
+    private double avgMemoryUsage;
+    private MemoryTracker.State memoryState = new MemoryTracker.State(0, 0);
 
     public void display(int[][] board) {
         for(int[] arr : board) {
@@ -50,6 +55,9 @@ public class Backtracking {
                     for (int checkedValue = 1; checkedValue <= 9; checkedValue++) {
                         if (isSafe(board, i, j, checkedValue)) {
                             board[i][j] = checkedValue;
+
+                            MemoryTracker.trackMemoryUsage(steps, memoryState, memoryUsages);
+                            
                             if (solve(board)) {
                                 return true;
                             }
@@ -60,6 +68,18 @@ public class Backtracking {
                 }
             }
         }
+
+        memoryUsageCount = memoryState.memoryUsageCount;
+        // Calculate and print average memory usage
+        long total = 0;
+        for (int i = 0; i < memoryUsageCount; i++) {
+            total += memoryUsages[i];
+        }
+        if (memoryUsageCount > 0) {
+            avgMemoryUsage = total / (double) memoryUsageCount / 1024; // in KB
+            // System.out.println("Average memory used: " + NumberFormat.getInstance().format(avgMemoryUsage) + " KB");
+        }
+
         return true;
     }
 
@@ -97,5 +117,17 @@ public class Backtracking {
     
     public int getSteps() {
         return steps;
+    }
+    
+    public long[] getMemoryUsages() {
+        return memoryUsages;
+    }
+
+    public int getMemoryUsageCount() {
+        return memoryUsageCount;
+    }
+
+    public double getAvgMemoryUsage() {
+        return avgMemoryUsage;
     }
 }

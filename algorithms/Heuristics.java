@@ -2,7 +2,10 @@ package algorithms;
 public class Heuristics {
     private final int SIZE = 9;
     private int steps = 0;
- 
+    private MemoryTracker.State memoryState = new MemoryTracker.State(0, 0);
+    private long[] memoryUsages = new long[1000];
+    private double avgMemoryUsage;
+
     public static void main(String[] args) {
         int[][] board = {
             {0, 0, 0, 5, 0, 6, 3, 0, 0},
@@ -56,9 +59,16 @@ public class Heuristics {
             if (isValid(board, row, col, val)) {
                 board[row][col] = val;
                 steps++;
- 
+                MemoryTracker.trackMemoryUsage(steps, memoryState, memoryUsages);
+
                 // tries placing numbers, checks forward validity
                 if (forwardCheck(board, row, col) && solve(board)) {
+                    int memoryUsageCount = memoryState.memoryUsageCount;
+                    long total = 0;
+                    for (int j = 0; j < memoryUsageCount; j++) {
+                        total += memoryUsages[j];
+                    }
+                    avgMemoryUsage = memoryUsageCount > 0 ? total / (double) memoryUsageCount / 1024 : 0; // in KB
                     return true;
                 }
                 board[row][col] = 0; // backtrack if no solution found and tries next value
@@ -176,5 +186,9 @@ public class Heuristics {
 
     public int getSteps() {
         return steps; // Return the updated steps
+    }
+    
+    public double getAvgMemoryUsage() {
+        return avgMemoryUsage;
     }
 }

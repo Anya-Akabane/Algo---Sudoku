@@ -4,6 +4,7 @@ import solver.SudokuSolver;
 
 public class HeuristicsSolver implements SudokuSolver {
     private int steps = 0; // Steps counter
+    private double avgMemoryUsage = 0;
 
     @Override
     public int[][] solve(int[][] puzzle) {
@@ -27,6 +28,7 @@ public class HeuristicsSolver implements SudokuSolver {
                     System.arraycopy(puzzle[i], 0, solution[i], 0, 9);
                 }
                 steps = heuristics.getSteps(); // Retrieve the number of steps
+                avgMemoryUsage = heuristics.getAvgMemoryUsage();
             }
         });
 
@@ -58,6 +60,10 @@ public class HeuristicsSolver implements SudokuSolver {
 
     public int getSteps() {
         return steps; // Return the updated steps
+    }
+
+    public double getAvgMemoryUsage() {
+        return avgMemoryUsage;
     }
 
     // Helper method to check if the solution array is empty

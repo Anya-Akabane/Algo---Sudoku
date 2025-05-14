@@ -4,6 +4,7 @@ import solver.SudokuSolver;
 
 public class DLXSolver implements SudokuSolver {
     private int steps = 0; // Steps counter
+    private double avgMemoryUsage = 0; // Add this line
 
     @Override
     public int[][] solve(int[][] puzzle) {
@@ -28,6 +29,7 @@ public class DLXSolver implements SudokuSolver {
                     System.arraycopy(result[i], 0, solution[i], 0, 9);
                 }
                 steps = dlx.getStepCount(); // Retrieve the number of steps
+                avgMemoryUsage = dlx.getAvgMemoryUsage(); // Add this line
             }
         });
 
@@ -61,6 +63,10 @@ public class DLXSolver implements SudokuSolver {
         return steps; // Return the updated steps
     }
     
+    public double getAvgMemoryUsage() {
+        return avgMemoryUsage;
+    }
+
     // Helper method to check if the solution array is empty
     private boolean isEmpty(int[][] grid) {
         for (int[] row : grid) {

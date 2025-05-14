@@ -4,6 +4,7 @@ import solver.SudokuSolver;
 
 public class ConstraintPropagationSolver implements SudokuSolver {
     private int steps = 0; // Steps counter
+    private double avgMemoryUsage;
 
     @Override
     public int[][] solve(int[][] puzzle) {
@@ -28,6 +29,7 @@ public class ConstraintPropagationSolver implements SudokuSolver {
                     System.arraycopy(result[i], 0, solution[i], 0, 9);
                 }
                 steps = cpSolver.getSteps(); // Retrieve the number of steps
+                avgMemoryUsage = cpSolver.getAvgMemoryUsage();
             }
         });
 
@@ -55,6 +57,10 @@ public class ConstraintPropagationSolver implements SudokuSolver {
         }
 
         return solution;
+    }
+
+    public double getAvgMemoryUsage() {
+        return avgMemoryUsage;
     }
 
     public int getSteps() {

@@ -58,6 +58,10 @@ public class DLX {
     private int steps = 0;            // 🔢 Step counter
     private long solveTimeMs = 0;     // ⏱ Time in milliseconds
 
+    private MemoryTracker.State memoryState = new MemoryTracker.State(0, 0);
+    private long[] memoryUsages = new long[1000];
+    private double avgMemoryUsage; // Add this line
+
     // =======================
     // Constructor
     // =======================
@@ -78,6 +82,14 @@ public class DLX {
         long end = System.currentTimeMillis();
         solveTimeMs = end - start;
 
+        // Calculate average memory usage
+        int memoryUsageCount = memoryState.memoryUsageCount;
+        long total = 0;
+        for (int i = 0; i < memoryUsageCount; i++) {
+            total += memoryUsages[i];
+        }
+        avgMemoryUsage = memoryUsageCount > 0 ? total / (double) memoryUsageCount / 1024 : 0; // in KB
+
         return foundSolution;
     }
 
@@ -87,6 +99,10 @@ public class DLX {
 
     public int getStepCount() {
         return steps;
+    }
+
+    public double getAvgMemoryUsage() {
+        return avgMemoryUsage;
     }
 
     public long getSolveTimeMs() {
@@ -168,6 +184,7 @@ public class DLX {
     // =======================
     private boolean search(int k) {
         steps++;
+        MemoryTracker.trackMemoryUsage(steps, memoryState, memoryUsages); // Add this line
 
         // If no columns remain, we have a complete solution
         if (header.right == header) {

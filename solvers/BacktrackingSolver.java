@@ -4,6 +4,7 @@ import solver.SudokuSolver;
 
 public class BacktrackingSolver implements SudokuSolver {
     private int steps = 0;
+    private double avgMemoryUsage;
 
     @Override
     public int[][] solve(int[][] puzzle) {
@@ -27,6 +28,7 @@ public class BacktrackingSolver implements SudokuSolver {
                     System.arraycopy(puzzle[i], 0, solution[i], 0, 9);
                 }
                 steps = backtracking.getSteps(); // Update steps from Backtracking instance
+                avgMemoryUsage = backtracking.getAvgMemoryUsage();
             }
         });
 
@@ -54,6 +56,10 @@ public class BacktrackingSolver implements SudokuSolver {
         }
 
         return solution;
+    }
+
+    public double getAvgMemoryUsage() {
+        return avgMemoryUsage;
     }
 
     public int getSteps() {

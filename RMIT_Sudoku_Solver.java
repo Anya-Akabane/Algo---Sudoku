@@ -138,6 +138,7 @@
 //     }
 // }
 
+import java.text.NumberFormat;
 import java.util.Scanner;
 
 import solver.SudokuSolver;
@@ -241,6 +242,7 @@ public class RMIT_Sudoku_Solver {
 
         // Retrieve and print the number of steps
         printSteps(solverInstance.solver);
+        printAvgMemoryUsage(solverInstance.solver);
 
         // Print the time taken
         System.out.printf("Time taken to solve: %.3f ms%n", elapsedTime);
@@ -250,6 +252,7 @@ public class RMIT_Sudoku_Solver {
     private static void solveMultiplePuzzles(SudokuGenerator generator, SudokuSolver solver, int puzzleCount) {
         long totalSteps = 0;
         long totalTime = 0;
+        double totalAvgMemory = 0; // Add this line
 
         for (int i = 0; i < puzzleCount; i++) {
             int[][] puzzle = generator.generatePuzzle(30); // Generate a puzzle with 30 clues
@@ -260,12 +263,15 @@ public class RMIT_Sudoku_Solver {
 
             totalTime += (endTime - startTime);
             totalSteps += getStepsFromSolver(solver);
+            totalAvgMemory += getAvgMemoryUsageFromSolver(solver); // Add this line
         }
 
         System.out.println("\nResults for " + puzzleCount + " puzzles:");
         System.out.println("Total time taken: " + (totalTime / 1e6) + " ms");
         System.out.println("Average time per puzzle: " + (totalTime / puzzleCount / 1e6) + " ms");
         System.out.println("Average steps per puzzle: " + (totalSteps / puzzleCount));
+        System.out.println("Average memory used per puzzle: " +
+            NumberFormat.getInstance().format(totalAvgMemory / puzzleCount) + " KB"); // Add this line
     }
 
     // Solve multiple puzzles with all algorithms
@@ -285,6 +291,13 @@ public class RMIT_Sudoku_Solver {
         System.out.println("Steps taken: " + steps);
     }
 
+    // Helper method to print the number of steps
+    private static void printAvgMemoryUsage(SudokuSolver solver) {
+        double avgMemoryUsage = getAvgMemoryUsageFromSolver(solver);
+        // System.out.println("Steps taken: " + avgMemoryUsage);
+        System.out.println("Average memory used: " + NumberFormat.getInstance().format(avgMemoryUsage) + " KB");
+    }
+
     // Helper method to get steps from a solver
     private static int getStepsFromSolver(SudokuSolver solver) {
         if (solver instanceof BacktrackingSolver) {
@@ -295,6 +308,20 @@ public class RMIT_Sudoku_Solver {
             return ((ConstraintPropagationSolver) solver).getSteps();
         } else if (solver instanceof DLXSolver) {
             return ((DLXSolver) solver).getSteps();
+        }
+        return 0;
+    }
+
+    // Helper method to get steps from a solver
+    private static double getAvgMemoryUsageFromSolver(SudokuSolver solver) {
+        if (solver instanceof BacktrackingSolver) {
+            return ((BacktrackingSolver) solver).getAvgMemoryUsage();
+        } else if (solver instanceof HeuristicsSolver) {
+            return ((HeuristicsSolver) solver).getAvgMemoryUsage();
+        } else if (solver instanceof ConstraintPropagationSolver) {
+            return ((ConstraintPropagationSolver) solver).getAvgMemoryUsage();
+        } else if (solver instanceof DLXSolver) {
+            return ((DLXSolver) solver).getAvgMemoryUsage();
         }
         return 0;
     }
