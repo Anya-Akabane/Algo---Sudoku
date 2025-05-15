@@ -146,6 +146,7 @@ import solvers.BacktrackingSolver;
 import solvers.ConstraintPropagationSolver;
 import solvers.DLXSolver;
 import solvers.HeuristicsSolver;
+import solvers.AStarSolver;
 
 public class RMIT_Sudoku_Solver {
     private SudokuSolver solver; // Store the actual solver instance
@@ -166,30 +167,32 @@ public class RMIT_Sudoku_Solver {
         System.out.println("2 - Heuristics");
         System.out.println("3 - Constraint Propagation");
         System.out.println("4 - DLX");
-        System.out.println("5 - (3000 puzzles) Backtracking");
-        System.out.println("6 - (3000 puzzles) Heuristics");
-        System.out.println("7 - (3000 puzzles) Constraint Propagation");
-        System.out.println("8 - (3000 puzzles) DLX");
-        System.out.println("9 - (3000 puzzles) All");
-        System.out.print("Enter your choice (1-9): ");
+        System.out.println("5 - AStar");
+        System.out.println("6 - (3000 puzzles) Backtracking");
+        System.out.println("7 - (3000 puzzles) Heuristics");
+        System.out.println("8 - (3000 puzzles) Constraint Propagation");
+        System.out.println("9 - (3000 puzzles) DLX");
+        System.out.println("10 - (3000 puzzles) AStar");
+        System.out.println("11 - (3000 puzzles) All");
+        System.out.print("Enter your choice (1-11): ");
 
         int choice = scanner.nextInt();
         scanner.close();
 
         RMIT_Sudoku_Solver solverInstance = new RMIT_Sudoku_Solver();
 
-        // Handle options 1-4 (single puzzle solving)
-        if (choice >= 1 && choice <= 4) {
+        // Handle options 1-5 (single puzzle solving)
+        if (choice >= 1 && choice <= 5) {
             solverInstance.solver = getSolverByChoice(choice);
             solveSinglePuzzle(generator, solverInstance);
         } 
-        // Handle options 5-8 (3000 puzzles with a single algorithm)
-        else if (choice >= 5 && choice <= 8) {
-            SudokuSolver solver = getSolverByChoice(choice - 4);
+        // Handle options 6-10 (3000 puzzles with a single algorithm)
+        else if (choice >= 6 && choice <= 10) {
+            SudokuSolver solver = getSolverByChoice(choice - 5);
             solveMultiplePuzzles(generator, solver, 3000);
         } 
-        // Handle option 9 (3000 puzzles with all algorithms)
-        else if (choice == 9) {
+        // Handle option 11 (3000 puzzles with all algorithms)
+        else if (choice == 11) {
             solveAllAlgorithms(generator, 3000);
         } 
         // Invalid choice
@@ -209,6 +212,8 @@ public class RMIT_Sudoku_Solver {
                 return new ConstraintPropagationSolver();
             case 4:
                 return new DLXSolver();
+            case 5:
+                return new AStarSolver();
             default:
                 throw new IllegalArgumentException("Invalid solver choice.");
         }
@@ -267,7 +272,8 @@ public class RMIT_Sudoku_Solver {
         }
 
         System.out.println("\nResults for " + puzzleCount + " puzzles:");
-        System.out.println("Total time taken: " + (totalTime / 1e6) + " ms");
+        // System.out.println("Total time taken: " + (totalTime / 1e6) + " ms");
+        System.out.println("Total time taken: " + (totalTime / 1e9) + " ms");
         System.out.println("Average time per puzzle: " + (totalTime / puzzleCount / 1e6) + " ms");
         System.out.println("Average steps per puzzle: " + (totalSteps / puzzleCount));
         System.out.println("Average memory used per puzzle: " +
@@ -278,7 +284,7 @@ public class RMIT_Sudoku_Solver {
     private static void solveAllAlgorithms(SudokuGenerator generator, int puzzleCount) {
         System.out.println("\nSolving " + puzzleCount + " puzzles with all algorithms...");
 
-        for (int i = 1; i <= 4; i++) {
+        for (int i = 1; i <= 5; i++) {
             SudokuSolver solver = getSolverByChoice(i);
             System.out.println("\nAlgorithm: " + solver.getClass().getSimpleName());
             solveMultiplePuzzles(generator, solver, puzzleCount);
@@ -308,6 +314,8 @@ public class RMIT_Sudoku_Solver {
             return ((ConstraintPropagationSolver) solver).getSteps();
         } else if (solver instanceof DLXSolver) {
             return ((DLXSolver) solver).getSteps();
+        } else if (solver instanceof AStarSolver) {
+            return ((AStarSolver) solver).getSteps();
         }
         return 0;
     }
@@ -322,6 +330,8 @@ public class RMIT_Sudoku_Solver {
             return ((ConstraintPropagationSolver) solver).getAvgMemoryUsage();
         } else if (solver instanceof DLXSolver) {
             return ((DLXSolver) solver).getAvgMemoryUsage();
+        } else if (solver instanceof AStarSolver) {
+            return ((AStarSolver) solver).getAvgMemoryUsage();
         }
         return 0;
     }
