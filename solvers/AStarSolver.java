@@ -12,6 +12,15 @@ public class AStarSolver implements SudokuSolver {
         final int[][] solution = new int[9][9];
 
         Thread solverThread = new Thread(() -> {
+            // Simulate no solution found within 2 minutes
+            // try {
+            //     // Simulate a long-running process by sleeping for 2 minutes and 30 seconds
+            //     Thread.sleep(150_000); // 150,000 milliseconds = 2 minutes and 30 seconds
+            // } catch (InterruptedException e) {
+            //     // Handle thread interruption
+            //     System.out.println("Solver thread was interrupted.");
+            // }
+
             if (astar.solve()) {
                 int[][] result = astar.getSolution();
                 for (int i = 0; i < 9; i++) {

@@ -3,7 +3,6 @@ import java.util.Arrays;
 
 public class Backtracking {
     private int steps = 0; // Counter for steps
-    private int lastMemoryPrintStep = 0;
     private long[] memoryUsages = new long[1000]; // Adjust size as needed
     private int memoryUsageCount = 0;
     private double avgMemoryUsage;
