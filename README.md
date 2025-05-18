@@ -13,10 +13,15 @@ Algo---Sudoku is a Java-based application for generating and solving Sudoku puzz
 - Display puzzles and solutions in a readable format.
 - Reports steps, average memory usage, and time taken for each algorithm.
 
-## Video Presentation and Demo
-GG Drive Link: 
+## Github Repository
+[Group9 github](https://github.com/Anya-Akabane/Algo---Sudoku.git)
 
-Youtube Link: 
+
+
+## Video Presentation and Demo
+YouTube Link: 
+
+GG Drive Link: [Group9 folder](https://drive.google.com/drive/folders/1UG1U2yrI8_dbzzYAz-c4Ai2swfAGa1Tg?usp=sharing)
 
 ## Contribution 
 -------------------
