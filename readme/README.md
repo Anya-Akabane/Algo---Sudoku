@@ -1,8 +1,5 @@
-# Algo---Sudoku
+# ALgorithms and Analysis - COSC2469|COSC2722
 
-==========================
-Algo---Sudoku
-==========================
 
 ## Project Description
 -------------------
@@ -121,11 +118,15 @@ Prerequisites
 ## Delete untracked files
 To see all untracked files before deleting, run:
 
+```
 git clean -n
+```
 
 To delete all untracked files in the repository:
 
+```
 git clean -f
+```
 
 --------------------------
 ## Project Structure and File Responsibilities
