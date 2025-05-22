@@ -20,7 +20,7 @@ Algo---Sudoku is a Java-based application for generating and solving Sudoku puzz
 
 ## Video Presentation and Demo
 
-https://rmiteduau-my.sharepoint.com/:v:/r/personal/s4052233_rmit_edu_vn/Documents/Sukodu%20Algorithms.mp4?csf=1&web=1&e=sPBAlR
+https://rmiteduau-my.sharepoint.com/:v:/g/personal/s4052233_rmit_edu_vn/ESSG62AJnA9CsytFRMkia_UBw0EqnYVT14yrd2LhM3hsOQ?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=e3kdby
 
 ## Contribution 
 -------------------
